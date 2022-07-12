@@ -1,6 +1,6 @@
 # installability-pipeline
 
-This repository contains the tmt plam for the installability test.
+This repository contains the tmt plam for the [installability test](https://docs.engineering.redhat.com/pages/viewpage.action?spaceKey=RHELPLAN&title=Installability+Testing).
 
 ## Test definition
 
@@ -12,5 +12,5 @@ The actual definition lives in the [installability.fmf](./installability.fmf) fi
 
 Try it locally:
 ```shell
-tmt run -ae REPO_URL="https://centos.softwarefactory-project.io/logs/11/11/9e75bb0c73d34f33b216e278645cb648efc4b929/check/mock-build/d39b3e8/repo/" -d provision --how virtual.testcloud --image fedora plan --name /installability
+tmt run -ae REPO_URL="https://centos.softwarefactory-project.io/logs/11/11/9e75bb0c73d34f33b216e278645cb648efc4b929/check/mock-build/d39b3e8/repo/" -d provision --how virtual.testcloud --image centos-9 plan --name /installability
 ```
