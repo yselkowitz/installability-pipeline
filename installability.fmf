@@ -1,5 +1,5 @@
-summary: TMT/FMF plan for running the installability tests.
-description: Runs installability tests in Fedora CI — https://github.com/fedora-ci/installability-pipeline.
+summary: tmt plan for the installability tests.
+description: Runs installability tests in CentOS Stream — https://github.com/fedora-ci/installability-pipeline.
 
 provision:
     how: virtual
@@ -13,19 +13,19 @@ discover:
       duration: 30m
     - name: install
       framework: shell
-      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=install --repo=brew-$TASK_ID
+      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=install --repo=zuul-repo
       duration: 240m
     - name: update
       framework: shell
-      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=update --repo=brew-$TASK_ID
+      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=update --repo=zuul-repo
       duration: 240m
     - name: downgrade
       framework: shell
-      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=downgrade --repo=brew-$TASK_ID
+      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=downgrade --repo=zuul-repo
       duration: 240m
     - name: remove
       framework: shell
-      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=remove --repo=brew-$TASK_ID
+      test: /usr/local/libexec/mini-tps/installability_runner.sh --critical --skiplangpack --selinux=1 --test=remove --repo=zuul-repo
       duration: 240m
 
 execute:

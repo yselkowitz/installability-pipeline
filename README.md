@@ -1,8 +1,6 @@
 # installability-pipeline
 
-This repository contains the definition of the Installability CI pipeline.
-
-This pipeline tries to install, update, downgrade and remove RPM packages and publishes results via [CI Messages](https://pagure.io/fedora-ci/messages).
+This repository contains the tmt plam for the installability test.
 
 ## Test definition
 
@@ -12,12 +10,7 @@ The actual definition lives in the [installability.fmf](./installability.fmf) fi
 
 ## Test execution
 
-The pipeline delegates the test execution to the [Testing Farm](https://api.dev.testing-farm.io). The pipeline only collects, archive and report results.
-
-However, it is possible to run the installability test locally. To do that, clone this repository and run following command:
-
+Try it locally:
 ```shell
-tmt run -ae TASK_ID=43617203 -e RELEASE_ID=Fedora-32 -d provision --how virtual.testcloud --image fedora plan --name /installability
+tmt run -ae REPO_URL="https://centos.softwarefactory-project.io/logs/11/11/9e75bb0c73d34f33b216e278645cb648efc4b929/check/mock-build/d39b3e8/repo/" -d provision --how virtual.testcloud --image fedora plan --name /installability
 ```
-
-The command above will run the installability test on a Koji build with the [task Id "43617203"](https://koji.fedoraproject.org/koji/taskinfo?taskID=43617203) (f32-backgrounds-32.1.3-1.fc32) and it tests it in the context of the latest Fedora.

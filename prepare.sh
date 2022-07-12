@@ -2,11 +2,10 @@
 
 set -e
 # sanity checks
-[ -z "$TASK_ID" ] && { echo "TASK_ID missing in the environment"; exit 1; }
-[ -z "$PROFILE_NAME" ] && { echo "PROFILE_NAME missing in the environment"; exit 1; }
+[ -z "$REPO_URL" ] && { echo "REPO_URL env variable is missing"; exit 1; }
 
 # install mini-tps
-curl --retry 5 --retry-delay 10 --retry-all-errors -Lo /etc/yum.repos.d/mini-tps.repo https://copr.fedorainfracloud.org/coprs/msrb/mini-tps/repo/fedora-rawhide/msrb-mini-tps-fedora-rawhide.repo
+curl --retry 5 --retry-delay 10 --retry-all-errors -Lo /etc/yum.repos.d/mini-tps.repo https://copr.fedorainfracloud.org/coprs/msrb/mini-tps/repo/centos-stream-9/msrb-mini-tps-centos-stream-9.repo
 dnf install -y mini-tps
 
 # make sure mini-tps can find Koji
@@ -14,8 +13,8 @@ dnf install -y mini-tps
 mkdir -p /var/tmp/mini-tps/ /usr/local/libexec/mini-tps/
 
 cat << EOF > /var/tmp/mini-tps/env
-export BREWHUB=https://koji.fedoraproject.org/kojihub
-export BREWROOT=https://kojipkgs.fedoraproject.org
+export BREWHUB=https://kojihub.stream.centos.org/kojihub
+export BREWROOT=https://kojihub.stream.centos.org/kojifiles
 EOF
 
 cat << EOF > /usr/local/libexec/mini-tps/installability_runner.sh
@@ -29,12 +28,13 @@ chmod +x /usr/local/libexec/mini-tps/installability_runner.sh
 . /var/tmp/mini-tps/env
 
 # prepare the system for testing
-mtps-prepare-system -p ${PROFILE_NAME} --fixrepo --enablebuildroot
-mtps-get-task --recursive --task=$TASK_ID --srpm
-mtps-get-task --createrepo --installrepofile --recursive --task=$TASK_ID --download=/var/lib/brew-repo
+mtps-prepare-system -p centos-9 --fixrepo --enablebuildroot
 
-if [ -n "$ADDITIONAL_TASK_IDS" ]; then
-    for additional_task_id in ${ADDITIONAL_TASK_IDS}; do
-        mtps-get-task --createrepo --installrepofile --recursive --task=$additional_task_id --download='/var/lib/repo-for-side-tag' --repofilename=side-tag
-    done
-fi
+cat << EOF > /etc/yum.repos.d/zuul-repo.repo
+[zuul-repo]
+name=Repo containing artifacts built by Zuul
+baseurl=${REPO_URL}
+enabled=1
+gpgcheck=0
+module_hotfixes=1
+EOF
