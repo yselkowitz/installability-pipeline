@@ -1,6 +1,6 @@
 # installability-pipeline
 
-This repository contains the tmt plam for the [installability test](https://docs.engineering.redhat.com/pages/viewpage.action?spaceKey=RHELPLAN&title=Installability+Testing).
+This repository contains the tmt plan for the [installability test](https://docs.engineering.redhat.com/pages/viewpage.action?spaceKey=RHELPLAN&title=Installability+Testing).
 
 ## Test definition
 
